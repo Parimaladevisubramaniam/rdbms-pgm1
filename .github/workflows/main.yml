@@ -2,28 +2,41 @@ name: SQL Autograding
 
 on:
   push:
+    branches: [ main ]
   pull_request:
 
 jobs:
-  grade:
+  autograde:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: CollegeDB
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install MySQL
+      - name: Wait for MySQL
         run: |
-          sudo apt-get update
-          sudo apt-get install -y mysql-server
+          until mysqladmin ping -h127.0.0.1 -uroot -proot --silent
+          do
+            sleep 2
+          done
 
-      - name: Start MySQL
+      - name: Run student SQL
         run: |
-          sudo systemctl start mysql
+          mysql -h127.0.0.1 -uroot -proot < starter.sql
 
-      - name: Execute Student SQL
+      - name: Run test cases
         run: |
-          mysql -u root < starter.sql
-
-      - name: Execute Test Cases
-        run: |
-          mysql -u root < testcase.sql
+          mysql -h127.0.0.1 -uroot -proot < testcase.sql
