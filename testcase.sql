@@ -1,5 +1,5 @@
 -- Select the database
-USE CollegeDB;
+USE CollegeDB1;
 
 -- Display all tables
 SHOW TABLES;
