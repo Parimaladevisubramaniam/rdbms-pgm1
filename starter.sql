@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS CollegeDB1;
+
 -- Create the database
 CREATE DATABASE CollegeDB1;
 
