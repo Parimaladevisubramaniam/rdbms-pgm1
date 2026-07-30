@@ -1,8 +1,8 @@
 -- Create the database
-CREATE DATABASE CollegeDB;
+CREATE DATABASE CollegeDB1;
 
 -- Select the database
-USE CollegeDB;
+USE CollegeDB1;
 
 -- Create the Department table
 CREATE TABLE Department (
